@@ -19,7 +19,7 @@ RUN set -ex; \
 
 COPY assets/ /
 
-CMD [ "python3", "-u", "/usr/local/bin/dnsomatic.py" ]
+CMD [ "python3", "-u", "/usr/local/bin/cloudflare-ddns.py" ]
 
 ### METADATA ###################################################################
 
