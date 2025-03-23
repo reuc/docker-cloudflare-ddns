@@ -64,7 +64,7 @@ while True:
 
                     if zoneid == "Domain Zone ID":
                         try:
-                            print(
+                            log('INFO',
                                 '* zone id for "{0}" is missing. attempting to '
                                 'get it from cloudflare...'.format(domain['name']))
                             zone_id_req = Request(base_url, headers=content_header)
@@ -75,15 +75,15 @@ while True:
                                     print('* zone id for "{0}" is'
                                           ' {1}'.format(domain['name'], domain['id']))
                         except HTTPError as e:
-                            print('* could not get zone id for: {0}'.format(domain['name']))
-                            print('* possible causes: wrong domain and/or auth credentials')
+                            log('ERROR','* could not get zone id for: {0}'.format(domain['name']))
+                            log('ERROR','* possible causes: wrong domain and/or auth credentials')
                             continue
 
                     fqdn = name + '.' + zone
 
                     # get host id from CloudFlare if missing
                     if not host['id']:
-                        print(
+                        log('INFO',
                             '* host id for "{0}" is missing. attempting'
                             ' to get it from cloudflare...'.format(fqdn))
                         rec_id_req = Request(
@@ -102,7 +102,7 @@ while True:
                             public_ip = public_ipv4
                             ip_version = 'ipv4'
                         else:
-                            print('* cannot set A record because no IPv4 is available')
+                            log('ERROR','* cannot set A record because no IPv4 is available')
                             continue
 
                     if update:
@@ -142,7 +142,7 @@ while True:
                     with open(config_file_name, 'w') as config_file:
                         json.dump(config, config_file, indent=1, sort_keys=True)
                 else:
-                    print('* nothing to update. bye.')
+                    log('INFO','* nothing to update. bye.')
 
 
     except requests.exceptions.RequestException as e:
