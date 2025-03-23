@@ -1,7 +1,6 @@
 FROM reuc/docker-ubuntu
 
-ENV CLOUDFLARE_EMAIL="username" \
-    CLOUDFLARE_APIKEY="password" \
+ENV CLOUDFLARE_TOKEN="your-api-token-here" \
     CLOUDFLARE_DELAY="60" \
     CLOUDFLARE_INTERVAL="60" \
     CLOUDFLARE_TRIES="2" \

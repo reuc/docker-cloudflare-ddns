@@ -24,6 +24,15 @@ def log_message(message, level="INFO"):
     print(f"[{timestamp}] [{level}] {message}")
 
 
+def get_cloudflare_token():
+    """Get the CloudFlare API token from environment variables"""
+    token = os.environ.get('CLOUDFLARE_TOKEN')
+    if not token:
+        log_message("CLOUDFLARE_TOKEN environment variable is not set", "ERROR")
+        return None
+    return token
+
+
 def get_public_ip():
     """Get the public IP address"""
     try:
@@ -38,8 +47,10 @@ def get_public_ip():
 
 def get_cloudflare_record():
     """Get the current DNS record from CloudFlare"""
-    email = os.environ.get('CLOUDFLARE_EMAIL')
-    api_key = os.environ.get('CLOUDFLARE_APIKEY')
+    token = get_cloudflare_token()
+    if not token:
+        return None
+
     zone_id = os.environ.get('CLOUDFLARE_ZONEID')
     record_name = os.environ.get('CLOUDFLARE_NAME')
     zone_name = os.environ.get('CLOUDFLARE_ZONE')
@@ -49,14 +60,16 @@ def get_cloudflare_record():
 
     url = f"https://api.cloudflare.com/client/v4/zones/{zone_id}/dns_records"
     headers = {
-        "X-Auth-Email": email,
-        "X-Auth-Key": api_key,
+        "Authorization": f"Bearer {token}",
         "Content-Type": "application/json"
     }
     params = {"type": record_type, "name": full_domain}
 
     try:
         response = requests.get(url, headers=headers, params=params)
+        if response.status_code != 200:
+            error_detail = response.json() if response.text else "No detail provided"
+            log_message(f"CloudFlare API error: {response.status_code}, Details: {error_detail}", "ERROR")
         response.raise_for_status()
         data = response.json()
 
@@ -70,8 +83,10 @@ def get_cloudflare_record():
 
 def update_cloudflare_record(record_id, ip_address):
     """Update CloudFlare DNS record with new IP"""
-    email = os.environ.get('CLOUDFLARE_EMAIL')
-    api_key = os.environ.get('CLOUDFLARE_APIKEY')
+    token = get_cloudflare_token()
+    if not token:
+        return False
+
     zone_id = os.environ.get('CLOUDFLARE_ZONEID')
     record_name = os.environ.get('CLOUDFLARE_NAME')
     zone_name = os.environ.get('CLOUDFLARE_ZONE')
@@ -82,8 +97,7 @@ def update_cloudflare_record(record_id, ip_address):
 
     url = f"https://api.cloudflare.com/client/v4/zones/{zone_id}/dns_records/{record_id}"
     headers = {
-        "X-Auth-Email": email,
-        "X-Auth-Key": api_key,
+        "Authorization": f"Bearer {token}",
         "Content-Type": "application/json"
     }
     data = {
@@ -96,6 +110,9 @@ def update_cloudflare_record(record_id, ip_address):
 
     try:
         response = requests.put(url, headers=headers, json=data)
+        if response.status_code != 200:
+            error_detail = response.json() if response.text else "No detail provided"
+            log_message(f"CloudFlare API error: {response.status_code}, Details: {error_detail}", "ERROR")
         response.raise_for_status()
         return response.json()["success"]
     except Exception as e:
@@ -105,8 +122,10 @@ def update_cloudflare_record(record_id, ip_address):
 
 def create_cloudflare_record(ip_address):
     """Create a new CloudFlare DNS record"""
-    email = os.environ.get('CLOUDFLARE_EMAIL')
-    api_key = os.environ.get('CLOUDFLARE_APIKEY')
+    token = get_cloudflare_token()
+    if not token:
+        return False
+
     zone_id = os.environ.get('CLOUDFLARE_ZONEID')
     record_name = os.environ.get('CLOUDFLARE_NAME')
     zone_name = os.environ.get('CLOUDFLARE_ZONE')
@@ -117,8 +136,7 @@ def create_cloudflare_record(ip_address):
 
     url = f"https://api.cloudflare.com/client/v4/zones/{zone_id}/dns_records"
     headers = {
-        "X-Auth-Email": email,
-        "X-Auth-Key": api_key,
+        "Authorization": f"Bearer {token}",
         "Content-Type": "application/json"
     }
     data = {
@@ -131,6 +149,9 @@ def create_cloudflare_record(ip_address):
 
     try:
         response = requests.post(url, headers=headers, json=data)
+        if response.status_code != 200:
+            error_detail = response.json() if response.text else "No detail provided"
+            log_message(f"CloudFlare API error: {response.status_code}, Details: {error_detail}", "ERROR")
         response.raise_for_status()
         return response.json()["success"]
     except Exception as e:
