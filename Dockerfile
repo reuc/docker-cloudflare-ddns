@@ -10,7 +10,7 @@ ENV CLOUDFLARE_EMAIL="username" \
     CLOUDFLARE_RECORDTYPE='A' \
     CLOUDFLARE_RECORDTTL='1' \
     CLOUDFLARE_IPV4=""
-    CLOUDFLARE_ID="Domain Zone ID"
+    CLOUDFLARE_ID="DomainZoneID"
 
 RUN set -ex; \
     pip install \
