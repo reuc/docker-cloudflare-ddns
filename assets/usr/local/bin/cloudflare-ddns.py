@@ -44,6 +44,7 @@ def get_public_ip():
         log_message(f"Error getting public IP: {str(e)}", "ERROR")
         return None
 
+#
 
 def get_cloudflare_record():
     """Get the current DNS record from CloudFlare"""
