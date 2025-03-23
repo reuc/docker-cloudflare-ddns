@@ -9,7 +9,7 @@ ENV CLOUDFLARE_EMAIL="username" \
     CLOUDFLARE_ZONE="example.com" \
     CLOUDFLARE_RECORDTYPE='A' \
     CLOUDFLARE_RECORDTTL='1' \
-    CLOUDFLARE_IPV4=""
+    CLOUDFLARE_IPV4="" \
     CLOUDFLARE_ID="DomainZoneID"
 
 RUN set -ex; \
