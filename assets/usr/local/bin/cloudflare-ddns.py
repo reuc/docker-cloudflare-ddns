@@ -22,7 +22,7 @@ import json
 def log(level, msg):
     now = dt.now(tz(os.getenv('TZ')))
     datetime = now.strftime('%Y/%m/%d %H:%M:%S.%f')[:-3] + now.strftime('%z')
-    print(datetime + '|dnsomatic|' + level + '|' + msg)
+    print(datetime + '|cloudflare|' + level + '|' + msg)
     return
 
 email = os.getenv('CLOUDFLARE_EMAIL')
