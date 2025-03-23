@@ -42,7 +42,7 @@ if delay > 0:
     log('INFO', 'Started with a ' + str(delay) + '-second delay')
     time.sleep(delay)
 
-host = {}
+host = {'id': None}
 domain = {'name': zone}
 currentIp = ''
 tried = 0
