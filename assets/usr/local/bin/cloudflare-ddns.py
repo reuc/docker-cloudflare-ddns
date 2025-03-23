@@ -27,13 +27,13 @@ def log(level, msg):
 
 email = os.getenv('CLOUDFLARE_EMAIL')
 apikey = os.getenv('CLOUDFLARE_APIKEY')
-delay = os.getenv('CLOUDFLARE_DELAY')
-interval = os.getenv('CLOUDFLARE_INTERVAL')
-tries = os.getenv('CLOUDFLARE_TRIES')
+delay = int(os.getenv('CLOUDFLARE_DELAY'))
+interval = int(os.getenv('CLOUDFLARE_INTERVAL'))
+tries = int(os.getenv('CLOUDFLARE_TRIES'))
 name = os.getenv('CLOUDFLARE_NAME')
 zone = os.getenv('CLOUDFLARE_ZONE')
 record_type = os.getenv('CLOUDFLARE_RECORDTYPE')
-recordttl = os.getenv('CLOUDFLARE_RECORDTTL')
+recordttl = int(os.getenv('CLOUDFLARE_RECORDTTL'))
 ipv4 = os.getenv('CLOUDFLARE_IPV4')
 zoneid = os.getenv('CLOUDFLARE_ZONEID')
 
