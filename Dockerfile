@@ -15,7 +15,8 @@ ENV CLOUDFLARE_EMAIL="username" \
 RUN set -ex; \
     pip install \
         pytz \
-        requests --break-system-packages
+        requests --break-system-packages \
+        urllib3 --break-system-packages
 
 COPY assets/ /
 
