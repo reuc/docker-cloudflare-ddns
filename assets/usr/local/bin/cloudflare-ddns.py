@@ -87,7 +87,7 @@ while True:
                             '* host id for "{0}" is missing. attempting'
                             ' to get it from cloudflare...'.format(fqdn))
                         rec_id_req = Request(
-                            base_url + domain['id'] + '/dns_records/',
+                            base_url + zoneid + '/dns_records/',
                             headers=content_header)
                         rec_id_resp = urlopen(rec_id_req)
                         parsed_host_ids = json.loads(rec_id_resp.read().decode('utf-8'))
